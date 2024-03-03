@@ -1,0 +1,31 @@
+def min_movimientos_torres (n,f):
+    return 0
+
+def min_movimientos_torres2(torres):
+    n = len(torres)
+    INF = float('inf')
+    
+    # Inicializar la matriz dp con infinito
+    dp = [[[INF for _ in range(101)] for _ in range(101)] for _ in range(n + 1)]
+    
+    # Caso base: 0 movimientos para reorganizar la torre vacía
+    for i in range(101):
+        dp[0][i][i] = 0
+    
+    # Calcular la matriz dp
+    for i in range(1, n + 1):
+        for j in range(101):
+            for k in range(101):
+                for l in range(j + 1):
+                    # Mover las fichas de las torres adyacentes más cercanas
+                    movimientos = abs(j - l) + abs(k - (l + 1))
+                    dp[i][j][k] = min(dp[i][j][k], dp[i - 1][l][j] + movimientos)
+    
+    # Encontrar el mínimo número de movimientos para reorganizar todas las torres
+    min_movimientos = min(dp[n][j][k] for j in range(101) for k in range(101))
+    
+    return min_movimientos
+
+# Ejemplo de uso:
+torres = [3, 1, 2, 4]
+print("El mínimo número de movimientos requeridos es:", min_movimientos_torres(torres))
